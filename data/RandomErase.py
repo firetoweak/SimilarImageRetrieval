@@ -55,7 +55,7 @@ class RandomErasing(object):
 
 if __name__ == '__main__':
     plt.rcParams['font.sans-serif'] = ['STSong']  # 中文宋体
-    img=Image.open('../data/originImage/animals1.jpg')
+    img=Image.open('originImages/animals1.jpg')
     img=img.resize((400,300),Image.BILINEAR)
     transform=transform.Compose([
         transform.ToTensor(),

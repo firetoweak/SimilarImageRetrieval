@@ -67,5 +67,5 @@ img = Image.open(filename).convert('RGB')
 for hue in np.linspace(0, 360, 15):
     img2 = hueChange(img, hue/360.)
     out_name = '{}_hue{:03d}.jpg'.format(basename, int(hue))
-    img2.save(out_name)
+    img2.originImages(out_name)
 '''

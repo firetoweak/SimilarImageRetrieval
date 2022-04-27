@@ -7,7 +7,6 @@
 import cv2
 import numpy as np
 from PIL import Image
-# from skimage import transform, data
 import torchvision.transforms as transform
 from torchvision.transforms import *
 import os
@@ -50,37 +49,36 @@ def mirror(path):
 
 
 if __name__ == "__main__":
-
-    originPath = '../data/originImage'
+    originPath = '../data/originImages'
     lider = os.listdir(originPath)
-    outpath = '../data/save'
+    outPath = '../data/changeImages'
+    if os.path.exists(outPath) is False:
+        os.makedirs(outPath)
     hue = np.linspace(0, 360, 15)
     i = 0
     for image in lider:
         path = os.path.join(originPath, image)
         basename, ext = os.path.splitext(path)
+        imgName  = basename.split('\\')[-1]
         img = Image.open(path).convert('RGB')
 
 
         moveImage = move(path, 100)
         moveImage = Image.fromarray(moveImage)
-        moveImage.save('{}_move.jpg'.format(basename))
+        moveImage.save(outPath + '/{}_move.jpg'.format(imgName))
 
         rotateImage = rotate(path, i+5)
         rotateImage = Image.fromarray(rotateImage)
-        rotateImage.save('{}_rotate.jpg'.format(basename))
+        rotateImage.save(outPath + '/{}_rotate.jpg'.format(imgName))
 
         mirrorImage = mirror(path)
         mirrorImage = Image.fromarray(mirrorImage)
-        mirrorImage.save('{}_mirror.jpg'.format(basename))
-        
-        
+        mirrorImage.save(outPath + '/{}_mirror.jpg'.format(imgName))
+
         img2 = changeColor.hueChange(img, hue[i] / 360.)
-        out_name = '{}_hue{:03d}.jpg'.format(basename, int(hue[i]))
+        out_name = outPath + '/{}_hue{:03d}.jpg'.format(imgName, int(hue[i]))
         img2.save(out_name)
 
-
-        # img = Image.open('../data/testImage/animals1.jpg')
         img = img.resize((400, 300), Image.BILINEAR)
         transformer = transform.Compose([
             transform.ToTensor(),
@@ -88,6 +86,6 @@ if __name__ == "__main__":
             ])
         img_t = transformer(img)
         image_PIL = transforms.ToPILImage()(img_t)
-        image_PIL.save('{}_erase.jpg'.format(basename))
+        image_PIL.save(outPath + '/{}_erase.jpg'.format(imgName))
 
         i += 1
